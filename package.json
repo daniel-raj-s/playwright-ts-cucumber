@@ -1,0 +1,93 @@
+{
+  "name": "playwright-ts-cucumber",
+  "version": "1.0.0",
+  "description": "End-to-end UI and API automation framework with Playwright & Cucumber",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist test-results .tsbuildinfo",
+    "build": "tsc -b",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,json,md}\"",
+    "test": "npm run clean && cross-env ENV=prod cucumber-js --config=config/cucumber.js || true",
+    "posttest": "npx ts-node src/helper/report/report.ts",
+    "test:failed": "npm run clean && cross-env ENV=prod cucumber-js -f @cucumber/pretty-formatter --config=config/cucumber.js -p rerun @rerun.txt || echo 'No failed tests found'",
+    "pretest": "npx ts-node src/helper/report/init.ts",
+    "dev": "npm run pretest && cross-env ENV=dev cucumber-js --config=config/cucumber.js && npm run posttest",
+    "dev:failed": "npm run clean && cross-env ENV=dev cucumber-js -f @cucumber/pretty-formatter --config=config/cucumber.js -p rerun @rerun.txt || echo 'No failed tests found'",
+    "debug": "cross-env ENV=prod PWDEBUG=1 DEBUG=pw:api cucumber-js @cucumber/pretty-formatter --config=config/cucumber.js",
+    "ci": "npm run lint && npm run build && npm test",
+    "test:ci": "npm run clean && cross-env ENV=prod cucumber-js --config=config/cucumber.js --publish-quiet && npm run posttest"
+  },
+  "keywords": [
+    "cucumber",
+    "playwright",
+    "typescript",
+    "automated-testing"
+  ],
+  "author": "Daniel Raj S",
+  "dependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "@playwright/test": "^1.52.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "fs-extra": "^11.3.0",
+    "multiple-cucumber-html-reporter": "^3.9.2",
+    "pg": "^8.16.0",
+    "winston": "^3.17.0",
+    "jsonpath-plus": "^10.3.0",
+    "crypto-js": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-cucumber": "^2.0.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "cucumber"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:cucumber/recommended",
+      "prettier"
+    ],
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "cucumber/async-then": "off",
+      "cucumber/no-async": "off",
+      "cucumber/consistent-test-it": [
+        "error",
+        {
+          "testIt": "it"
+        }
+      ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "@typescript-eslint/no-non-null-assertion": "off"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "all"
+  }
+}

@@ -1,0 +1,41 @@
+# Node dependencies
+node_modules/
+dist/
+
+# Test and report outputs
+test-results/
+test-result/
+playwright-report/
+playwright/.cache/
+cucumber-report.html
+@rerun.txt
+
+# Build and asset folders
+assets/
+.tsbuildinfo
+
+# Environment files
+.env.*
+
+# macOS system files (already included below, but kept here for clarity)
+.DS_Store
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+*-lock.json
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak
+
+# IntelliJ IDEA
+.idea/
