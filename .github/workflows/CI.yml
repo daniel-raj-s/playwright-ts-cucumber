@@ -37,9 +37,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-ubuntu-latest-20.x-${{ hashFiles('**/package-lock.json') }}
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            playwright-ubuntu-latest-20.x-
+            playwright-browsers-${{ runner.os }}-
+            playwright-browsers-
+          fail-on-cache-miss: false
 
       - name: Cache npm modules
         uses: actions/cache@v3
