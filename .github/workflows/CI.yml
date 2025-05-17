@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -56,6 +56,12 @@ jobs:
           key: playwright-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             playwright-${{ matrix.os }}-${{ matrix.node-version }}-
+
+      - name: Cache npm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
@@ -73,7 +79,9 @@ jobs:
           fi
 
       - name: Run Cucumber (UI & API) tests
-        run: npm run test
+        run: npm run test -- --tags "${{ steps.determine-tags.outputs.tags }}"
+        env:
+          TAGS: ${{ steps.determine-tags.outputs.tags }}
 
       - name: Archive test-results
         if: always()
@@ -82,3 +90,13 @@ jobs:
           name: test-results
           path: test-results
           retention-days: 7
+
+      - name: Generate HTML report
+        run: npm run posttest
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-html-report
+          path: test-results/reports
