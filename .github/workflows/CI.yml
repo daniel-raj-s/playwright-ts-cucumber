@@ -18,21 +18,10 @@ concurrency:
 permissions:
   contents: read
   actions: read
-  id-token: write
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-
-    env:
-      PROD_DB_HOST: ${{ secrets.PROD_DB_HOST }}
-      PROD_DB_PORT: ${{ secrets.PROD_DB_PORT }}
-      PROD_DB_NAME: ${{ secrets.PROD_DB_NAME }}
-      PROD_DB_USER: ${{ secrets.PROD_DB_USER }}
-      PROD_DB_PASSWORD: ${{ secrets.PROD_DB_PASSWORD }}
-      SECRET: ${{ secrets.API_CLIENT_SECRET }}
-      TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
-      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
     steps:
       - name: Checkout repository
@@ -57,6 +46,10 @@ jobs:
         with:
           path: ~/.npm
           key: ubuntu-latest-node-20.x-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ubuntu-latest-node-20.x-
+            ubuntu-latest-20.x-
+            ubuntu-latest-
 
       - name: Install dependencies
         run: npm ci
@@ -85,13 +78,3 @@ jobs:
           name: test-results
           path: test-results
           retention-days: 7
-
-      - name: Generate HTML report
-        run: npm run posttest
-
-      - name: Upload HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cucumber-html-report
-          path: test-results/reports

@@ -1,0 +1,237 @@
+:root {
+  --color-primary: #00529B;
+  --color-secondary: #FFC857;
+  --color-bg: #F5F7FA;
+  --color-text: #333333;
+  --border-radius: 0.5rem;
+  --transition: 0.2s ease-in-out;
+  --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global Reset & Typography */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--color-secondary);
+}
+
+/* Header & Footer */
+.report-header {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.report-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.report-header .subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.report-footer {
+  background: var(--color-bg);
+  color: #666;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 2rem;
+}
+
+/* Sidebar */
+.sidebar {
+  background: #fff;
+  border-right: 1px solid #ddd;
+}
+.sidebar .list-group-item {
+  padding: 0.5rem 1rem;
+  color: var(--color-primary);
+  transition: background var(--transition);
+}
+.sidebar .list-group-item:hover,
+.sidebar .list-group-item.active {
+  background: #f0faff;
+  font-weight: 600;
+}
+
+/* Panels */
+.x_panel {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+  min-height: 360px;
+}
+
+.fixed_height_320 {
+  min-height: 360px !important;
+}
+.x_panel:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Panel Title & Content */
+.x_title {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.x_title h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.x_content {
+  padding: 1rem;
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+}
+.table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+  background: #fafafa;
+}
+
+/* Tile Info */
+.tile_info {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.tile_info td {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+.tile_info td i {
+  margin-right: 0.5rem;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.25em 0.5em;
+  border-radius: var(--border-radius);
+}
+.badge-success { background: #28a745; }
+.badge-danger  { background: #dc3545; }
+
+/* Code Blocks */
+pre,
+code {
+  background: #f4f4f4;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 0.875rem;
+  overflow-x: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .report-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .x_title h2 {
+    font-size: 1rem;
+  }
+}
+
+/* Align Chart, Status, and Progress in chart tables */
+table.chart th,
+table.chart td {
+  vertical-align: middle;
+}
+
+table.chart th p,
+table.chart td p {
+  margin: 0;
+}
+
+table.chart th:nth-child(1),
+table.chart td.chart {
+  text-align: center;
+}
+
+table.chart tr:first-child th:nth-child(2) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+table.chart tr:first-child th:nth-child(2) .col-lg-7,
+table.chart tr:first-child th:nth-child(2) .col-lg-5 {
+  padding: 0;
+  margin: 0;
+}
+
+table.chart tr:first-child th:nth-child(2) .col-lg-5 p {
+  margin: 0;
+}
+
+
+/* Merge Total duration rows inline and adjust weights */
+table.chart tbody tr:nth-child(3),
+table.chart tbody tr:nth-child(4) {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+table.chart tbody tr:nth-child(3) {
+  font-weight: 600; /* bold label */
+}
+
+table.chart tbody tr:nth-child(4) {
+  font-weight: normal; /* normal weight for value */
+}
+
+table.chart tbody tr:nth-child(3) th,
+table.chart tbody tr:nth-child(4) td {
+  padding: 0.5rem 1rem;
+  border: none;
+}
+/* When panel has an inline style (collapsed), allow it to shrink */
+.x_panel[style] {
+  height: auto !important;
+  min-height: 0 !important;
+}
