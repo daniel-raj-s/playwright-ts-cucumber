@@ -1,148 +1,198 @@
-A modular, end-to-end UI and API automation framework with PostGres integration built by Daniel Raj S. It provides a scalable test architecture with Page Objects, reusable helpers, custom Cucumber hooks, automated reporting, and environment-specific configuration.
+
+# UI and API Automation Framework
+*A modular, scalable end-to-end framework by Daniel Raj S.*
 
 ## Table of Contents
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Technology Stack](#technology-stack)
+4. [Prerequisites](#prerequisites)
+5. [Installation](#installation)
+6. [Configuration](#configuration)
+7. [Running Tests](#running-tests)
+	- [UI Tests](#ui-tests)
+	- [API Tests](#api-tests)
+8. [Environment Variables](#environment-variables)
+9. [Directory Structure](#directory-structure)
+10. [Contributing](#contributing)
+11. [License](#license)
+12. [Author](#author)
 
-1. [Overview](#overview)  
-2. [Features](#features)  
-3. [Technology Stack](#technology-stack)  
-4. [Prerequisites](#prerequisites)  
-5. [Installation](#installation)  
-6. [Configuration](#configuration)  
-7. [Running Tests](#running-tests)  
-   - [UI Tests](#ui-tests)  
-   - [API Tests](#api-tests)  
-8. [Environment Variables](#environment-variables)  
-9. [Directory Structure](#directory-structure)  
-10. [Contributing](#contributing)  
-11. [License](#license)  
-12. [Author](#author)  
+---
 
 ## Overview
 
-This framework offers:
+This framework provides a **modular**, **end-to-end** automation solution for both UI and API testing. It integrates seamlessly with **Postgres**, supports **Cucumber BDD**, and includes a robust reporting and configuration system.
 
-- **Page Objects** and **Step Definitions** for modular UI automation  
-- **API Utility** for authenticated REST calls  
-- **Custom Helpers** (assertions, common actions, date utils, random data)  
-- **Custom Cucumber Hooks** for artifact management and environment setup  
-- Automated **screenshots**, **videos**, and **Multiple Cucumber HTML Reports**  
-- **GitHub Actions** CI template for automated test runs  
+### Key Features
+- **Postgres DB integration** for backend validation
+- **Gherkin-based BDD syntax** using Cucumber
+- **Reusable JSON/YAML fixtures** for test data
+- **Automated reporting** with screenshots, videos, and HTML output
+- **Parallel execution** for faster feedback cycles
+- **Environment-specific configurations** using `.env.{env}` files
+- **Docker support** for containerized execution
+
+### Key Components
+- **Cucumber.js** – for Gherkin-style specs
+- **Playwright** – for cross-browser UI automation
+- **Postgres** – for DB assertions
+- **Winston** – for structured logging
+- **dotenv** – for environment variable management
+- **fs-extra** – for file operations
+- **jsonpath-plus** – for data extraction from responses
+- **crypto-js** – for encryption/decryption
+
+---
 
 ## Features
 
-- Cross-browser testing with Playwright (Chromium, Firefox, WebKit)  
-- Data-driven testing via JSON/YAML fixtures  
-- Environment-specific `.env.{env}` configuration  
-- Parallel test execution with configurable threads  
-- Extensible utilities for logging, database operations, and more  
+- Cross-browser testing (Chromium, Firefox, WebKit)
+- Data-driven test execution with JSON/YAML
+- Seamless environment switching with `.env.{env}` files
+- Parallel test execution with configurable threads
+- Utility-first design (DB ops, loggers, assertions, and more)
+- CI-ready with GitHub Actions template
+
+---
 
 ## Technology Stack
 
-- **Language:** TypeScript  
-- **Test Runner:** Cucumber.js  
-- **Browser Automation:** Playwright  
-- **Reporting:** multiple-cucumber-html-reporter  
-- **Utilities:** fs-extra, winston, dotenv, jsonpath-plus, crypto-js, pg  
-- **CI/CD:** GitHub Actions  
+- **Language:** TypeScript
+- **BDD Runner:** Cucumber.js
+- **Browser Automation:** Playwright
+- **Reporting:** multiple-cucumber-html-reporter
+- **Utilities:** fs-extra, winston, dotenv, jsonpath-plus, crypto-js, pg
+- **CI/CD:** GitHub Actions
+
+---
 
 ## Prerequisites
 
-- Node.js v16+  
-- npm v8+  
-- (Optional) Docker if running tests in containerized environments  
+- **Node.js** ≥ v16
+- **npm** ≥ v8
+- (Optional) **Docker** for containerized test execution
+
+---
 
 ## Installation
 
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/your-org/tv.octillion.UIAutomation.git
-   cd tv.octillion.UIAutomation
+```bash
+git clone https://github.com/your-org/tv.octillion.UIAutomation.git
+cd tv.octillion.UIAutomation
 
-	2.	Install dependencies
-
+# Install project dependencies
 npm ci
+
+# Install browser dependencies for Playwright
 npx playwright install --with-deps
+```
 
+---
 
+## Configuration
 
-Configuration
+All environment-specific configurations are stored in the `src/helper/env/` folder using `.env.{env}` files.
 
-Environment variables are managed via .env.{env} files in src/helper/env/.
-Use the ENV variable to select your config:
+Example:
 
-export ENV=dev      # loads .env.dev
-export ENV=staging  # loads .env.staging
-export ENV=prod     # loads .env.prod
+```bash
+export ENV=dev      # Loads .env.dev
+export ENV=staging  # Loads .env.staging
+export ENV=prod     # Loads .env.prod
+```
 
-You can also set other vars (e.g. BROWSER, HEADLESS, SLOWMO, DEVTOOLS, PARALLEL, TAGS) before running tests.
+You can also define other environment variables such as `BROWSER`, `HEADLESS`, `SLOWMO`, `DEVTOOLS`, `PARALLEL`, and `TAGS`.
 
-Running Tests
+---
 
-UI Tests
+## Running Tests
 
-# Run UI tests tagged @ui in parallel
+### UI Tests
+
+Run UI tests tagged with `@ui` in parallel mode:
+
+```bash
 ENV=dev PARALLEL=2 TAGS="@ui" npm run dev
+```
 
-API Tests
+### API Tests
 
-# Run API tests tagged @api
+Run API tests tagged with `@api`:
+
+```bash
 ENV=dev PARALLEL=1 TAGS="@api" npm run dev
+```
 
-Test artifacts (screenshots, videos, traces, HTML reports) land under the test-results/ folder.
+All artifacts like screenshots, videos, traces, and HTML reports are stored in the `test-results/` directory.
 
-Environment Variables
+---
 
-Name	Description	Default
-ENV	Target environment (dev, staging, prod, etc.)	dev
-BROWSER	Browser to use (chromium, firefox, webkit)	chromium
-HEADLESS	Run browser headless (true/false)	true
-SLOWMO	Slow down Playwright actions (ms)	0
-DEVTOOLS	Launch browser with devtools (true/false)	false
-PARALLEL	Number of parallel test threads	1
-TAGS	Cucumber tag expression (e.g. @ui or @api)	—
+## Environment Variables
 
-Directory Structure
+| Name      | Description                              | Default     |
+|-----------|------------------------------------------|-------------|
+| `ENV`     | Target environment (dev, staging, prod)  | `dev`       |
+| `BROWSER` | Browser to use (chromium, firefox, etc.) | `chromium`  |
+| `HEADLESS`| Run browser in headless mode             | `true`      |
+| `SLOWMO`  | Delay Playwright actions (in ms)         | `0`         |
+| `DEVTOOLS`| Launch browser with DevTools             | `false`     |
+| `PARALLEL`| Number of parallel threads               | `1`         |
+| `TAGS`    | Cucumber tag expression (e.g. `@ui`)     | —           |
 
+---
+
+## Directory Structure
+
+```
 .
 ├── config/
-│   └── cucumber.js           # Cucumber configuration
+│   └── cucumber.js              # Cucumber configuration
 ├── src/
 │   ├── helper/
-│   │   ├── api-utils.ts       # REST helper with token management
+│   │   ├── api-utils.ts         # REST utilities
 │   │   ├── browsers/
 │   │   │   └── browserManager.ts
 │   │   ├── env/
 │   │   │   ├── env.ts
-│   │   │   └── .env.*         # Environment files
+│   │   │   └── .env.*           # Environment files
 │   │   ├── report/
 │   │   │   ├── init.ts
 │   │   │   └── report.ts
-│   │   └── util/              # Common utilities
+│   │   └── util/                # Common utilities
 │   ├── hooks/
 │   │   ├── hooks.ts
 │   │   └── pageFixture.ts
-│   └── pages/                 # Page Objects
+│   └── pages/                   # Page Objects
 ├── src/test/
-│   ├── TestData/              # Test fixtures (JSON/YAML)
-│   ├── features/              # Gherkin feature files
-│   └── steps/                 # Step definitions
-├── test-results/              # Test artifacts
+│   ├── TestData/                # Test data in JSON/YAML
+│   ├── features/                # Gherkin feature files
+│   └── steps/                   # Step definitions
+├── test-results/                # Test artifacts (reports, screenshots)
 ├── .github/
-│   └── workflows/ci.yml       # CI pipeline
+│   └── workflows/ci.yml         # GitHub Actions pipeline
 ├── package.json
 ├── tsconfig.json
 └── README.md
+```
 
-Contributing
-	1.	Fork the repo and create a feature branch
-	2.	Implement your changes with clear, descriptive commits
-	3.	Add or update tests and fixtures as needed
-	4.	Submit a Pull Request against main and ensure all CI checks pass
+---
 
-License
+## Contributing
 
-This project is licensed under the MIT License.
+1. Fork the repository and create a feature branch
+2. Write clean, descriptive commits
+3. Update or add relevant tests and data files
+4. Submit a pull request to `main` and ensure all CI checks pass
 
-Author
+---
 
-Daniel 🚀
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+## Author
+
+**Daniel 🚀**
