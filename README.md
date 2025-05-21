@@ -71,15 +71,14 @@ This framework provides a **modular**, **end-to-end** automation solution for bo
 
 - **Node.js** ≥ v16
 - **npm** ≥ v8
-- (Optional) **Docker** for containerized test execution
 
 ---
 
 ## Installation
 
 ```bash
-git clone https://github.com/your-org/tv.octillion.UIAutomation.git
-cd tv.octillion.UIAutomation
+git clone https://github.com/daniel-raj-s/playwright-ts-cucumber.git
+cd playwright-ts-cucumber
 
 # Install project dependencies
 npm ci
